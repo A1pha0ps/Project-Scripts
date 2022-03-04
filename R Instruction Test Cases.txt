@@ -1,0 +1,35 @@
+## desc = Test Cases for R-Instruction Commands
+## cycles = 9
+
+#Initializing Registers
+addi x1, x1, -1234
+addi x2, x2, -1456
+addi x3, x3, 980
+addi x4, x4, 752
+
+## expect[1] = -1234
+## expect[2] = -1456
+## expect[3] = 980
+## expect[4] = 752
+
+add x5, x1, x2
+add x6, x3, x4
+
+## expect[5] = -2690
+## expect[6] = 1732
+
+sub x7, x1, x2
+sub x8, x2, x1
+sub x9, x3, x4
+
+## expect[7] = 222
+## expect[8] = -222
+## expect[9] = 228
+
+and x10,x1,x2
+or x11,x1,x2
+xor x12,x1,x2
+
+## expect[10] = -1536
+## expect[11] = -1154
+## expect[12] = 382
