@@ -66,11 +66,9 @@ class Main {
                                 n -= pPrefixSum[0][x - 1];
                                 m -= hPrefixSum[0][x - 1];
                             }
-                            System.out.println(area + "," + n + "," + m);
+                            //System.out.println(area + "," + n + "," + m);
                             if (n == area || m == area || (n == 0 && m == 0)) {
                                 hasOne = true;
-                            }else{
-                                dp[y][y + deltay][x][x + deltax] = Integer.MAX_VALUE;
                             }
                         } else if (x == 0) {
                             int area = deltay + 1;
@@ -82,8 +80,6 @@ class Main {
                             }
                             if (n == area || m == area || (n == 0 && m == 0)) {
                                 hasOne = true;
-                            }else{
-                                dp[y][y + deltay][x][x + deltax] = Integer.MAX_VALUE;
                             }
                         } else {
                             int area = (deltax + 1) * (deltay + 1);
@@ -91,33 +87,38 @@ class Main {
                             int m = hPrefixSum[y + deltay][x + deltax] - hPrefixSum[y + deltay][x - 1] - hPrefixSum[y - 1][x + deltax] + hPrefixSum[y - 1][x - 1];
                             if (n == area || m == area || (n == 0 && m == 0)) {
                                 hasOne = true;
-                            }else{
-                                dp[y][y + deltay][x][x + deltax] = Integer.MAX_VALUE;
                             }
                         }
 
                         if(hasOne){
-                            dp[y][y + deltay][x][x + deltax] = 0;
+
+                            dp[y][deltay][x][deltax] = 0;
+
                         }else{
+
                             int bestVerticalCut = Integer.MAX_VALUE;
                             for(int i = x; i < x + deltax; i++){
-                                int possible1 = 1 + dp[y][y + deltay][x][i] + dp[y][y + deltay][i+1][deltax + x];
-                                bestVerticalCut = Math.min(bestVerticalCut,possible1);
+                                int vertCut = 1 + dp[y][deltay][x][i-x] + dp[y][deltay][i+1][deltax + x - i - 1];
+                                bestVerticalCut = Math.min(bestVerticalCut,vertCut);
+
                             }
+
                             int bestHorizontalCut = Integer.MAX_VALUE;
                             for(int j = y; j < y + deltay; j++){
-                                int possible2 = 1 + dp[y][j][x][x + deltax] + dp[j+1][y + deltay][x][deltax + x];
-                                bestHorizontalCut = Math.min(bestHorizontalCut,possible2);
+                                int horizontalCut = 1 + dp[y][j-y][x][deltax] + dp[j+1][y + deltay - j - 1][x][deltax];
+                                bestHorizontalCut = Math.min(bestHorizontalCut,horizontalCut);
                             }
 
-                            dp[y][y + deltay][x][x + deltax] = Math.min(bestHorizontalCut, bestVerticalCut);
+                            dp[y][deltay][x][deltax] = Math.min(bestHorizontalCut, bestVerticalCut);
                         }
 
-                        System.out.println("y: " + y + ", deltay: " + deltay + ", x: " + x + ", deltax: " + deltax + ", hasOne: " + hasOne + " ; " + dp[y][y + deltay][x][x+deltax]);
+                        //System.out.println("y: " + y + ", deltay: " + deltay + ", x: " + x + ", deltax: " + deltax + ", hasOne: " + hasOne + " ; " + dp[y][y + deltay][x][x+deltax]);
                     }
                 }
             }
         }
+
+        System.out.println(dp[0][rows-1][0][columns-1]);
     }
 
 }
